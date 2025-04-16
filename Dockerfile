@@ -8,7 +8,7 @@ ENV PATH=/opt/venv/bin:$PATH
 RUN pip install --upgrade pip
 
 ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFRED 1
+ENV PYTHONUNBUFFERED 1
 
 
 RUN apt-get upgrade && apt-get install -y \
