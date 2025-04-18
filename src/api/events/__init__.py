@@ -1,4 +1,4 @@
-from .routing import *
+from .routing import router
 
 __all__ = ['router']
 
