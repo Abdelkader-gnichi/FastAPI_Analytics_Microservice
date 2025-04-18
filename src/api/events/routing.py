@@ -5,11 +5,12 @@ from .schemas import (
     EventCreateSchema, 
     EventUpdateSchema
 )
-
+import os
 router = APIRouter()
 
 @router.get("/")
 def read_events() -> EventListSchema:
+    print(os.environ.get('DATA_BASE_URL'))
     return {
         'results': [
             {'id':1}, {'id':2}, {'id':3}
