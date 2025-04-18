@@ -6,11 +6,13 @@ from .schemas import (
     EventUpdateSchema
 )
 import os
+from api.db.configs import DATA_BASE_URL
+
 router = APIRouter()
 
 @router.get("/")
 def read_events() -> EventListSchema:
-    print(os.environ.get('DATA_BASE_URL'))
+    print(os.environ.get('DATA_BASE_URL'), '|', DATA_BASE_URL)
     return {
         'results': [
             {'id':1}, {'id':2}, {'id':3}
