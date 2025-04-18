@@ -22,3 +22,8 @@ def get_event_by_id(event_id: int): # or use -> EventSchema:
 def create_event(data: dict={}) -> EventSchema:
     print(data)
     return data
+
+@router.put("/{event_id}/")
+def update_event(event_id: int, payload: dict={}):
+    print(payload)
+    return payload
