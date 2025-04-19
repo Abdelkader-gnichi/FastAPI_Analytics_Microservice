@@ -4,8 +4,8 @@ import uuid
 
 
 class TimestampMixin(SQLModel, table=False):
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc), nullable=False) 
-    updated_at: datetime = Field(default_factory=datetime.now(timezone.utc), nullable=False)
+    created_at: datetime = Field(default_factory= lambda: datetime.now(timezone.utc), nullable=False) 
+    updated_at: datetime = Field(default_factory= lambda: datetime.now(timezone.utc), nullable=False)
 
 
 class UUIDBase(SQLModel, table=False):
