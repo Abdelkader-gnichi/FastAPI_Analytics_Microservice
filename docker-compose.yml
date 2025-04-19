@@ -22,6 +22,9 @@ services:
           path: requirements.txt
         - action: rebuild
           path: docker-compose.yml
+    depends_on:
+      timescale_pg_db:
+        condition: service_healthy
 
   timescale_pg_db:
     image: timescale/timescaledb:latest-pg17
@@ -35,6 +38,11 @@ services:
       - ${POSTGRES_PORT:-5432}
     volumes:
       - timescale_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
   timescale_db_data:

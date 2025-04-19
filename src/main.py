@@ -13,7 +13,7 @@ async def lifespan(app: FastAPI):
     # clean up  
 
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 app.include_router(events_router, prefix='/api/events')
 
 @app.get("/")
