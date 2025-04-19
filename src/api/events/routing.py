@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from .models import (
     EventModel, 
     EventListSchema, 
@@ -9,6 +9,7 @@ from .models import (
 
 from api.db.session import get_session
 from sqlmodel import Session, select
+from uuid import UUID
 
 router = APIRouter()
 
@@ -24,9 +25,14 @@ def read_events(session: Session = Depends(get_session)) -> EventListSchema:
     }
 
 
-@router.get("/{event_id}", response_model=EventModel)
-def get_event_by_id(event_id: int): # or use -> EventModel:
-    return {'id': event_id}
+@router.get("/{event_id}/", response_model=EventModel)
+def get_event_by_id(event_id: UUID, session: Session= Depends(get_session)): # or use -> EventModel:
+    query = select(EventModel).where(EventModel.id == event_id)
+    result = session.exec(query).first()
+    if not result:
+        raise HTTPException(status_code=404, detail=f"Event with id: {event_id} not found.")
+    print(result, type(result))
+    return result
 
 
 @router.post("/", response_model=EventModel)
@@ -46,7 +52,7 @@ def create_event(
     return obj
 
 @router.put("/{event_id}/")
-def update_event(event_id: int, payload: EventUpdateSchema) -> EventModel:
+def update_event(event_id: UUID, payload: EventUpdateSchema) -> EventModel:
     print(payload.description.capitalize())
     data = payload.model_dump()
     return {'id': event_id, **data}
