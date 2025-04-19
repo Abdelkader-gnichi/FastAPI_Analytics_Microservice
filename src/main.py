@@ -1,7 +1,16 @@
+from contextlib import asynccontextmanager
 from typing import Union
-
+from api.db.session import init_db
 from fastapi import FastAPI
 from api.events import router as events_router
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # before startup 
+    init_db()
+    yield
+    # clean up  
 
 
 app = FastAPI()
