@@ -1,4 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
+from fastapi import status
 from .models import (
     EventModel, 
     EventListSchema, 
@@ -8,7 +10,7 @@ from .models import (
 
 
 from api.db.session import get_session
-from sqlmodel import Session, select
+from sqlmodel import Session, select, delete
 from uuid import UUID
 
 router = APIRouter()
@@ -56,3 +58,16 @@ def update_event(event_id: UUID, payload: EventUpdateSchema) -> EventModel:
     print(payload.description.capitalize())
     data = payload.model_dump()
     return {'id': event_id, **data}
+
+@router.delete("/{event_id}/")
+def delete_event_by_id(event_id: UUID, session: Session = Depends(get_session)):
+    query = delete(EventModel).where(EventModel.id == event_id)
+    result = session.exec(query)
+
+    if result.rowcount == 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"event with id: {event_id} not found.")
+    
+    session.commit()
+
+        # or Response(status_code=status.HTTP_204_NO_CONTENT) without a body
+    return JSONResponse({'detail': 'record deleted successfully.'}, status_code=status.HTTP_200_OK)
