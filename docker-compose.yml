@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     # environment:
     #   - PORT=8002
-    #   - DATA_BASE_URL=${DATA_BASE_URL}
+    #   - DATABASE_URL=${DATABASE_URL}
     env_file:
       - .env.compose
     ports:
