@@ -1,0 +1,26 @@
+{
+  "jupyter": {
+    "kernel_selections": {
+      "python": "conda-env",
+      "typescript": "deno",
+      "javascript": "deno",
+      "r": "ark"
+    }
+  }
+  // ,
+  // "terminal": {
+  //   "shell": { 
+  //     "with_arguments": { 
+  //       "program": "/bin/zsh", 
+  //       "args": ["-c", "source venv/bin/activate && exec zsh"]
+  //     } 
+  //   } 
+  // },
+  // "languages": {
+  //   "Python": {
+  //     "interpreter": {
+  //       "path": "/home/gadour/Documents/cursor_workspace/FastAPI_Analytics_Microservice/venv/bin/python"
+  //     }
+  //   }
+  // }
+}
