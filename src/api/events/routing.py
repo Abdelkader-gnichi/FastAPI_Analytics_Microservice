@@ -1,3 +1,4 @@
+from re import S
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi import status
@@ -18,7 +19,7 @@ router = APIRouter()
 @router.get("/")
 def read_events(session: Session = Depends(get_session)) -> EventListSchema:
     
-    query = select(EventModel).order_by(EventModel.id.desc()).limit(10)
+    query = select(EventModel).order_by(EventModel.created_at.desc()).limit(10)
     results = session.exec(query).all()
 
     return {
@@ -53,11 +54,25 @@ def create_event(
 
     return obj
 
-@router.put("/{event_id}/")
-def update_event(event_id: UUID, payload: EventUpdateSchema) -> EventModel:
-    print(payload.description.capitalize())
-    data = payload.model_dump()
-    return {'id': event_id, **data}
+@router.put("/{event_id}/", response_model=EventModel)
+def update_event(event_id: UUID, payload: EventUpdateSchema, session: Session = Depends(get_session)):
+    query = select(EventModel).where(EventModel.id == event_id)
+    
+    obj = session.exec(query).first()
+    print('result', obj)
+    if not obj:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Event with id: {event_id} doesn't exists.")
+    
+    # only update given fields and leave other with thier original values 
+    update_data = payload.model_dump(exclude_unset=True)
+    
+    for k, v in update_data.items():
+        setattr(obj, k, v)
+    
+    session.add(obj)
+    session.commit()
+    session.refresh(obj)
+    return obj
 
 @router.delete("/{event_id}/")
 def delete_event_by_id(event_id: UUID, session: Session = Depends(get_session)):

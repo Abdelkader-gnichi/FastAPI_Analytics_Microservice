@@ -20,4 +20,5 @@ class EventCreateSchema(SQLModel):
 
 
 class EventUpdateSchema(SQLModel):
-    description: str
+    page: Optional[str] = None
+    description: Optional[str] = None
