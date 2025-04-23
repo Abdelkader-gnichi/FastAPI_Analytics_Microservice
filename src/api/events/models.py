@@ -1,10 +1,10 @@
 from typing import List, Optional
 from sqlmodel import SQLModel, Field
 from api.common.models import BaseModel
+from timescaledb import TimescaleModel
 
-
-class EventModel(BaseModel, table=True):
-    page: Optional[str] = ""
+class EventModel(BaseModel, TimescaleModel, table=True):
+    page: str = Field(index=True)
     description: Optional[str] = Field(default="Default DEsc")
 
 

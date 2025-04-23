@@ -18,7 +18,7 @@ router = APIRouter()
 @router.get("/")
 def read_events(session: Session = Depends(get_session)) -> EventListSchema:
     
-    query = select(EventModel).order_by(EventModel.created_at.desc()).limit(10)
+    query = select(EventModel).order_by(EventModel.time.desc()).limit(10)
     results = session.exec(query).all()
 
     return {
