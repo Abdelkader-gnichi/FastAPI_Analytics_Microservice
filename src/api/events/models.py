@@ -16,7 +16,7 @@ class EventListSchema(SQLModel):
 
 class EventCreateSchema(SQLModel):
     page: str
-    description: Optional[str] = "" 
+    description: Optional[str] = ""
 
 
 class EventUpdateSchema(SQLModel):

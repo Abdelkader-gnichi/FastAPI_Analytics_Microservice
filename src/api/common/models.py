@@ -1,11 +1,14 @@
+import sqlmodel
 from sqlmodel import SQLModel, Field
 from datetime import datetime, timezone
 import uuid
 
+def get_utc_now():
+    return datetime.now(timezone.utc).replace(tzinfo=timezone.utc)
 
 class TimestampMixin(SQLModel, table=False):
-    created_at: datetime = Field(default_factory= lambda: datetime.now(timezone.utc), nullable=False) 
-    updated_at: datetime = Field(default_factory= lambda: datetime.now(timezone.utc), nullable=False)
+    created_at: datetime = Field(default_factory=get_utc_now, sa_type=sqlmodel.DateTime(timezone=True), nullable=False) 
+    updated_at: datetime = Field(default_factory=get_utc_now, sa_type=sqlmodel.DateTime(timezone=True), nullable=False)
 
 
 class UUIDBase(SQLModel, table=False):
