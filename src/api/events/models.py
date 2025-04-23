@@ -7,8 +7,8 @@ class EventModel(BaseModel, TimescaleModel, table=True):
     page: str = Field(index=True)
     description: Optional[str] = Field(default="Default DEsc")
     
-    _chunk_time_interval__: str = "INTERVAL 1 day"
-    __drop_after__:  str = "INTERVAL 3 months"
+    _chunk_time_interval__= "INTERVAL 1 day"
+    __drop_after__= "INTERVAL 3 months"
         
 
 
