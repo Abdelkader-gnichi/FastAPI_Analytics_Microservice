@@ -1,20 +1,25 @@
 import sqlmodel
 from sqlmodel import SQLModel, Session
-from .configs import DATABASE_URL
+from .configs import DATABASE_URL, DB_TIMEZONE
 import time
 from sqlalchemy.exc import OperationalError
+import timescaledb
 
 if DATABASE_URL == "":
     raise NotImplementedError("DATABASE_URL variable not implemented.")
-
-engine = sqlmodel.create_engine(DATABASE_URL)
+    
+# use sqlmodel for tradition pg models, but here we are using timescale once
+engine = timescaledb.create_engine(DATABASE_URL, timezone=DB_TIMEZONE)
 
 
 
 def init_db(max_retries: int = 10, delay: int = 3):
     for attempt in range(max_retries):
         try:
+            # to create tradition pg tables
             SQLModel.metadata.create_all(engine)
+            # to create time series (timescale) tables
+            timescaledb.metadata.create_all(engine)
             print("✅ DB initialized")
             return
         except OperationalError as e:

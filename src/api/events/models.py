@@ -6,6 +6,10 @@ from timescaledb import TimescaleModel
 class EventModel(BaseModel, TimescaleModel, table=True):
     page: str = Field(index=True)
     description: Optional[str] = Field(default="Default DEsc")
+    
+    _chunk_time_interval__: str = "INTERVAL 1 day"
+    __drop_after__:  str = "INTERVAL 3 months"
+        
 
 
 class EventListSchema(SQLModel):
