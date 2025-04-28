@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Optional
 from sqlmodel import SQLModel, Field
 from api.common.models import BaseModel
@@ -6,10 +7,10 @@ from timescaledb import TimescaleModel
 class EventModel(BaseModel, TimescaleModel, table=True):
     page: str = Field(index=True)
     description: Optional[str] = Field(default="Default DEsc")
-    
+
     _chunk_time_interval__= "INTERVAL 1 day"
     __drop_after__= "INTERVAL 3 months"
-        
+
 
 
 class EventListSchema(SQLModel):
@@ -26,3 +27,9 @@ class EventCreateSchema(SQLModel):
 class EventUpdateSchema(SQLModel):
     page: Optional[str] = None
     description: Optional[str] = None
+
+
+class EventBucketSchema(BaseModel):
+    bucket: datetime
+    page: str
+    count: int
