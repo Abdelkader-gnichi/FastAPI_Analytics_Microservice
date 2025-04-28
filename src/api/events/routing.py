@@ -31,7 +31,7 @@ def read_events(
 ): #  -> EventListSchema
     
     # query = select(EventModel).order_by(EventModel.time.desc()).limit(10)
-    bucket = time_bucket('1 day', EventModel.time)
+    bucket = time_bucket(duration, EventModel.time)
     lookup_pages = pages if isinstance(pages, list) and len(pages) > 0 else DEFAULT_LOOKUP_PAGES
     
     query = select(
