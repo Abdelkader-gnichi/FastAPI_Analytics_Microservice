@@ -6,7 +6,7 @@ from .models import (
     EventListSchema,
     EventBucketSchema,
     EventCreateSchema, 
-    EventUpdateSchema
+    # EventUpdateSchema
 )
 
 
@@ -14,14 +14,18 @@ from api.db.session import get_session
 from sqlmodel import Session, select, delete
 from uuid import UUID
 
-from sqlalchemy import  func
+from sqlalchemy import  func, case
 from timescaledb.hyperfunctions import time_bucket
 from typing import List
 
 
 router = APIRouter()
 
-DEFAULT_LOOKUP_PAGES = ['/contact', '/about', '/home', '/pricing', '/blog']
+DEFAULT_LOOKUP_PAGES = [
+    '/', '/about', '/pricing', '/contact', 
+    '/blog', '/products', '/login', '/register',
+    '/services', '/support', '/dashboard', '/settings'
+]
 
 @router.get("/", response_model=List[EventBucketSchema])
 def read_events(
@@ -33,19 +37,34 @@ def read_events(
     # query = select(EventModel).order_by(EventModel.time.desc()).limit(10)
     bucket = time_bucket(duration, EventModel.time)
     lookup_pages = pages if isinstance(pages, list) and len(pages) > 0 else DEFAULT_LOOKUP_PAGES
+    os_case = case(
+        (EventModel.user_agent.ilike('%Windows%'), 'Windows'),
+        (EventModel.user_agent.ilike('%macintosh%'), 'MacOS'),
+        (EventModel.user_agent.ilike('%iphone%'), 'IOS'),
+        (EventModel.user_agent.ilike('%android%'), 'Android'),
+        (EventModel.user_agent.ilike('%linux%'), 'Linux'),
+        else_='Other'
+    ).label('operating_system')
     
     query = select(
         bucket.label('bucket'),
         EventModel.page.label('page'),
+        # EventModel.user_agent.label('ua'),
+        os_case,
+        func.avg(EventModel.duration).label('avg_duration'),
         func.count().label('count')
     ).where(
         EventModel.page.in_(lookup_pages)
     ).group_by(
         bucket,
-        EventModel.page
+        EventModel.page,
+        # EventModel.user_agent
+        os_case
     ).order_by(
         bucket,
-        EventModel.page
+        EventModel.page,
+        # EventModel.user_agent
+        os_case
     )
     results = session.exec(query).all()
 
@@ -78,25 +97,25 @@ def create_event(
 
     return obj
 
-@router.put("/{event_id}/", response_model=EventModel)
-def update_event(event_id: UUID, payload: EventUpdateSchema, session: Session = Depends(get_session)):
-    query = select(EventModel).where(EventModel.id == event_id)
+# @router.put("/{event_id}/", response_model=EventModel)
+# def update_event(event_id: UUID, payload: EventUpdateSchema, session: Session = Depends(get_session)):
+#     query = select(EventModel).where(EventModel.id == event_id)
     
-    obj = session.exec(query).first()
-    print('result', obj)
-    if not obj:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Event with id: {event_id} doesn't exists.")
+#     obj = session.exec(query).first()
+#     print('result', obj)
+#     if not obj:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Event with id: {event_id} doesn't exists.")
     
-    # only update given fields and leave other with thier original values 
-    update_data = payload.model_dump(exclude_unset=True)
+#     # only update given fields and leave other with thier original values 
+#     update_data = payload.model_dump(exclude_unset=True)
     
-    for k, v in update_data.items():
-        setattr(obj, k, v)
+#     for k, v in update_data.items():
+#         setattr(obj, k, v)
     
-    session.add(obj)
-    session.commit()
-    session.refresh(obj)
-    return obj
+#     session.add(obj)
+#     session.commit()
+#     session.refresh(obj)
+#     return obj
 
 @router.delete("/{event_id}/")
 def delete_event_by_id(event_id: UUID, session: Session = Depends(get_session)):
