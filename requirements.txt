@@ -20,4 +20,5 @@ typing-inspection==0.4.0
 typing_extensions==4.13.2
 uvicorn==0.34.1
 requests
+faker==37.1.0
 psycopg[binary]
