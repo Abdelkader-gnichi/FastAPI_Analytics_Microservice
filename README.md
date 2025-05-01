@@ -30,24 +30,32 @@ A high-performance FastAPI microservice designed for collecting and analyzing ti
 ## Project Structure
 
 ```
-.
-├── boot/ # Startup scripts (e.g., for Docker)
-│ └── docker-run.sh
-├── docker-compose.yml # Docker Compose configuration
-├── Dockerfile # Docker build instructions
-├── .env # Environment variables (local development)
-├── .env.compose # Environment variables for Docker Compose
-├── notebooks/ # Jupyter notebooks for testing/interaction
-├── requirements.txt # Python dependencies
-├── railway.json # Railway deployment configuration
-├── src/ # Source code directory
-│ ├── alembic/ # Alembic database migration files (Optional/Not fully shown)
-│ ├── api/ # API specific modules
-│ │ ├── common/ # Common utilities/models (BaseModel, Timestamps)
-│ │ ├── db/ # Database session, configuration, initialization
-│ │ └── events/ # Events specific logic (models, routing)
-│ └── main.py # FastAPI application entry point
-└── README.md # This file
+Project Root
+├── boot/
+│   └── docker-run.sh              # Startup script, typically used with Docker
+│
+├── docker-compose.yml             # Docker Compose configuration file
+├── Dockerfile                     # Instructions to build the Docker image
+│
+├── .env                           # Environment variables for local development
+├── .env.compose                   # Environment variables specifically for Docker Compose
+│
+├── notebooks/                     # Jupyter notebooks for testing and interaction
+│
+├── requirements.txt               # List of Python dependencies
+│
+├── railway.json                   # Railway deployment configuration file
+│
+├── src/                           # Main source code directory
+│   ├── alembic/                   # (Optional) Alembic migrations for database versioning
+│   ├── api/                       # API-related modules
+│   │   ├── common/                # Shared utilities and models (e.g., BaseModel, timestamps)
+│   │   ├── db/                    # Database configuration, session, and initialization
+│   │   └── events/                # Event-specific logic, models, and routing
+│   └── main.py                    # Entry point of the FastAPI application
+│
+└── README.md                      # Project documentation
+
 ```
 ## API Endpoints
 
