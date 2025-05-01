@@ -1,3 +1,52 @@
+# FastAPI Analytics API
+
+A high-performance FastAPI microservice designed for collecting and analyzing time-series event data. It leverages TimescaleDB for efficient storage and querying of analytics events, making it suitable for tracking user interactions, application performance metrics, or other time-sensitive data.
+
+## Features
+
+*   **Event Tracking:** Log events via a simple POST request, capturing details like page visited, user agent, IP address, session ID, and event duration.
+*   **Aggregated Analytics:** Retrieve aggregated event data grouped by customizable time buckets (e.g., '1 day', '1 hour').
+*   **Data Filtering:** Filter aggregated results by specific pages.
+*   **OS Detection:** Automatically infers the Operating System (Windows, MacOS, iOS, Android, Linux, Other) from the User-Agent string during aggregation.
+*   **Time-Series Optimized:** Utilizes TimescaleDB hypertables and `time_bucket` hyperfunctions for efficient time-based data storage and querying.
+*   **Data Validation:** Employs Pydantic and SQLModel for robust request/response data validation and ORM capabilities.
+*   **Asynchronous Ready:** Built on FastAPI, supporting asynchronous operations (though current routes are synchronous).
+*   **Containerized:** Includes `Dockerfile` and `docker-compose.yml` for easy setup and deployment using Docker.
+*   **Database Initialization:** Automatically initializes the database and creates TimescaleDB hypertables on startup.
+*   **CORS Enabled:** Configured with FastAPI's CORS middleware (currently allowing all origins).
+*   **Deployment Ready:** Includes configuration for deployment on platforms like Railway (`railway.json`).
+
+## Technology Stack
+
+*   **Backend Framework:** FastAPI
+*   **Database:** PostgreSQL with TimescaleDB Extension
+*   **ORM / Data Validation:** SQLModel
+*   **Web Server:** Uvicorn (managed by Gunicorn in Docker)
+*   **Containerization:** Docker, Docker Compose
+*   **Configuration:** python-decouple
+*   **Language:** Python 3.12
+*   **Dependency Management:** pip (using `uv` in Docker build)
+
+## Project Structure
+
+.
+├── boot/ # Startup scripts (e.g., for Docker)
+│ └── docker-run.sh
+├── docker-compose.yml # Docker Compose configuration
+├── Dockerfile # Docker build instructions
+├── .env # Environment variables (local development)
+├── .env.compose # Environment variables for Docker Compose
+├── notebooks/ # Jupyter notebooks for testing/interaction
+├── requirements.txt # Python dependencies
+├── railway.json # Railway deployment configuration
+├── src/ # Source code directory
+│ ├── alembic/ # Alembic database migration files (Optional/Not fully shown)
+│ ├── api/ # API specific modules
+│ │ ├── common/ # Common utilities/models (BaseModel, Timestamps)
+│ │ ├── db/ # Database session, configuration, initialization
+│ │ └── events/ # Events specific logic (models, routing)
+│ └── main.py # FastAPI application entry point
+└── README.md # This file
 
 ## API Endpoints
 
@@ -68,8 +117,8 @@
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repository-url>
-    cd <your-repository-directory>
+    git clone https://github.com/Abdelkader-gnichi/FastAPI_Analytics_Microservice.git
+    cd FastAPI_Analytics_Microservice
     ```
 
 2.  **Configure Environment Variables:**
