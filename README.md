@@ -150,16 +150,20 @@ Project Root
 
 4.  **Running Locally (Without Docker):**
     *   Ensure you have a running PostgreSQL instance with the TimescaleDB extension enabled and configured in your `.env` file (`POSTGRES_HOST` should point to your local or remote DB host).
+    *   Install `uv` if not installed, it is way fast than pip:
+        ```bash
+        pip install uv
+        ```
     *   Create a virtual environment:
         ```bash
-        python -m venv venv
+        uv venv
         source venv/bin/activate # On Windows: venv\Scripts\activate
         ```
     *   Install dependencies:
         ```bash
-        pip install -r requirements.txt
-        # Or if you have uv installed:
-        # uv pip install -r requirements.txt
+        uv pip install -r requirements.txt
+        # Or if you use pip installed:
+        #pip install -r requirements.txt
         ```
     *   Run the FastAPI application:
         ```bash
@@ -189,10 +193,46 @@ This project is configured for deployment using Docker.
 
 The `notebooks/` directory contains Jupyter notebooks that can be used to interact with and test the API endpoints (e.g., sending sample events, querying aggregated data). Ensure the API is running before executing the notebooks.
 
+---
+
 ## Contributing
 
-[Optional: Add guidelines for contributing if this is an open project - e.g., Fork the repository, create a feature branch, submit a Pull Request.]
+We welcome contributions to this project! To contribute, please follow these steps:
+
+1.  **Fork** the repository on GitHub.
+2.  **Clone** your fork to your local machine:
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/your-repository-name.git
+    cd your-repository-name
+    ```
+    *(Replace `YOUR_USERNAME` and `your-repository-name`)*
+3.  Create a **new branch** for your feature or bug fix:
+    ```bash
+    git checkout -b feature/your-descriptive-feature-name
+    ```
+    *(Use a descriptive branch name, e.g., `feature/add-browser-detection` or `fix/aggregation-query-error`)*
+4.  Make your **changes** and **commit** them with clear, concise messages. It's helpful to follow conventional commit formats if possible (e.g., `feat: ...`, `fix: ...`, `docs: ...`).
+    ```bash
+    # Make your code changes
+    git add .
+    git commit -m "feat: Add user browser detection to aggregation"
+    ```
+5.  **Push** your changes to your forked repository:
+    ```bash
+    git push origin feature/your-descriptive-feature-name
+    ```
+6.  Submit a **Pull Request** (PR) from your feature branch on your fork to the `main` (or appropriate target) branch of the original repository.
+    *   Clearly describe the changes you've made and why.
+    *   Link any relevant issues if applicable (e.g., `Closes #123`).
+
+Please ensure your code adheres to the existing style and conventions. Add tests or documentation where appropriate.
+
+Thank you for helping improve the project!
+
+---
 
 ## License
 
-[Optional: Specify your project's license, e.g., MIT License, Apache 2.0 License. If unsure, choose a standard one like MIT.]
+This project is licensed under the **MIT License**.
+
+You are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software, subject to the conditions outlined in the license. A copy of the license is often included as a `LICENSE` file in the repository.
