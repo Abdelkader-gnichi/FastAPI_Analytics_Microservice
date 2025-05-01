@@ -2,6 +2,13 @@
 
 A high-performance FastAPI microservice designed for collecting and analyzing time-series event data. It leverages TimescaleDB for efficient storage and querying of analytics events, making it suitable for tracking user interactions, application performance metrics, or other time-sensitive data.
 
+
+https://github.com/user-attachments/assets/8e8a999d-3a02-4311-8940-0c14ba726b56
+
+
+https://github.com/user-attachments/assets/7190345f-52a7-45d2-94b2-e199c6ebac72
+
+
 ## Features
 
 *   **Event Tracking:** Log events via a simple POST request, capturing details like page visited, user agent, IP address, session ID, and event duration.
