@@ -29,6 +29,7 @@ A high-performance FastAPI microservice designed for collecting and analyzing ti
 
 ## Project Structure
 
+```
 .
 ├── boot/ # Startup scripts (e.g., for Docker)
 │ └── docker-run.sh
@@ -47,7 +48,7 @@ A high-performance FastAPI microservice designed for collecting and analyzing ti
 │ │ └── events/ # Events specific logic (models, routing)
 │ └── main.py # FastAPI application entry point
 └── README.md # This file
-
+```
 ## API Endpoints
 
 ### Events
