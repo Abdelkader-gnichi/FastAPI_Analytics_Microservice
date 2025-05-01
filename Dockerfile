@@ -1,7 +1,10 @@
 FROM python:3.12.4-slim-bullseye@sha256:26ce493641ad3b1c8a6202117c31340c7bbb2dc126f1aeee8ea3972730a81dc6
 
 
-RUN python -m venv /opt/venv
+RUN pip install uv
+    
+
+RUN uv venv /opt/venv
 
 ENV PATH=/opt/venv/bin:$PATH
 
@@ -26,7 +29,7 @@ COPY requirements.txt /tmp/requirements.txt
 
 COPY ./src /app
 
-RUN pip install -r /tmp/requirements.txt
+RUN uv pip install -r /tmp/requirements.txt
 
 COPY ./boot/docker-run.sh /opt/run.sh
 

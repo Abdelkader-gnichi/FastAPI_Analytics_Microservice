@@ -11,7 +11,7 @@
     "shell": { 
       "with_arguments": { 
         "program": "/bin/zsh", 
-        "args": ["-c", "source venv/bin/activate && exec zsh"]
+        "args": ["-c", "source .venv/bin/activate && exec zsh"]
       } 
     } 
   }
